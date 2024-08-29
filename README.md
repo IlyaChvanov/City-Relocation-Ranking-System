@@ -33,6 +33,5 @@ The **Country Relocation Ranking System** is designed to help individuals evalua
 
    ```bash
    git clone https://github.com/yourusername/relocation-ranking-system.git
-   cd relocation-ranking-system```
 2. **Build**
 3. **Run Country Relocation Ranking System**
