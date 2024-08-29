@@ -12,7 +12,7 @@ The **Country Relocation Ranking System** is designed to help individuals evalua
 - **HTTP Requests**: Employs Boost libraries for making HTTP requests to various APIs for data collection.
 - **JSON Parsing**: Uses `nlohmann/json` for handling and parsing JSON data.
 - **Testing**: Incorporates Google Test for unit testing to ensure code reliability.
-- **Code Style**: Adheres to Google C++ Style Guide for consistent and readable code.
+- **Code Style**: https://google.github.io/styleguide/cppguide.html
 
 ## Technologies Used
 
@@ -20,7 +20,6 @@ The **Country Relocation Ranking System** is designed to help individuals evalua
 - **Boost.Beast**: Part of the Boost library used for HTTP requests and handling.
 - **nlohmann/json**: A JSON library for C++ used for parsing and manipulating JSON data.
 - **Google Test**: A testing framework for C++ used to create and run unit tests.
-- **Google C++ Style Guide**: Coding style guidelines followed for consistency and clarity.
 
 ## Installation
 
