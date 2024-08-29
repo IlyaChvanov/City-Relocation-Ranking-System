@@ -12,7 +12,6 @@ The **Country Relocation Ranking System** is designed to help individuals evalua
 - **HTTP Requests**: Employs Boost libraries for making HTTP requests to various APIs for data collection.
 - **JSON Parsing**: Uses `nlohmann/json` for handling and parsing JSON data.
 - **Testing**: Incorporates Google Test for unit testing to ensure code reliability.
-- **Code Style**: Adheres to Google C++ Style Guide for consistent and readable code.
 
 ## Technologies Used
 
@@ -34,6 +33,8 @@ The **Country Relocation Ranking System** is designed to help individuals evalua
 
    ```bash
    git clone https://github.com/yourusername/relocation-ranking-system.git
-   cd relocation-ranking-system```
 2. **Build**
 3. **Run Country Relocation Ranking System**
+
+### Structure
+<img src="img/UML_1.png">
