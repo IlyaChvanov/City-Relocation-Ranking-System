@@ -42,7 +42,6 @@ target_include_directories(tests
         PRIVATE ${CMAKE_SOURCE_DIR}/include
 )
 add_executable(Country-Relocation-Ranking-System main.cpp
-        src/country.cpp
         src/language_data_collector.cpp
         src/life_quality_data_collector.cpp
         src/postgres_db_manager.cpp
