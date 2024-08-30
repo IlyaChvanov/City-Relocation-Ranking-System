@@ -37,4 +37,4 @@ The **Country Relocation Ranking System** is designed to help individuals evalua
 3. **Run Country Relocation Ranking System**
 
 ### Structure
-<img src="img/UML_2.png">
+<img src="img/UML_3.png">

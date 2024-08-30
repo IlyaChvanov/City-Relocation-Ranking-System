@@ -37,7 +37,23 @@ FetchContent_MakeAvailable(libpqxx)
 FetchContent_MakeAvailable(json)
 
 add_executable(tests tests/test_main.cpp)
-add_executable(Country-Relocation-Ranking-System main.cpp)
+
+target_include_directories(tests
+        PRIVATE ${CMAKE_SOURCE_DIR}/include
+)
+add_executable(Country-Relocation-Ranking-System main.cpp
+        src/country.cpp
+        src/language_data_collector.cpp
+        src/life_quality_data_collector.cpp
+        src/postgres_db_manager.cpp
+        src/statistics_analyzer.cpp
+        src/weather_data_collector.cpp
+        src/UI.cpp)
+
+
+target_include_directories(Country-Relocation-Ranking-System
+        PRIVATE ${CMAKE_SOURCE_DIR}/include
+)
 
 target_link_libraries(tests PRIVATE gtest_main)
 target_link_libraries(Country-Relocation-Ranking-System PRIVATE pqxx)
