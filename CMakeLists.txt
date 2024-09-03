@@ -43,16 +43,20 @@ add_executable(Country-Relocation-Ranking-System main.cpp
         src/postgres_db_manager.cpp
         src/statistics_analyzer.cpp
         src/weather_data_collector.cpp
-        src/UI.cpp)
+        src/UI.cpp
+        src/i_data_collector.cpp
+)
 
 target_include_directories(Country-Relocation-Ranking-System
         PRIVATE ${CMAKE_SOURCE_DIR}/include
 )
 
 add_executable(tests
+        src/i_data_collector.cpp
+        src/weather_data_collector.cpp
         tests/test_main.cpp
-        tests/test_ui.cpp
-        src/UI.cpp)
+        tests/test_coord_from_name.cpp
+)
 
 target_include_directories(tests
         PRIVATE ${CMAKE_SOURCE_DIR}/include
@@ -62,13 +66,19 @@ target_link_libraries(tests
         gtest
         gmock
         gtest_main
+        nlohmann_json::nlohmann_json
+        ${Boost_LIBRARIES}
 )
 target_link_libraries(Country-Relocation-Ranking-System PRIVATE pqxx)
 target_link_libraries(Country-Relocation-Ranking-System PRIVATE nlohmann_json::nlohmann_json)
+target_link_libraries(tests PRIVATE nlohmann_json::nlohmann_json)
 
 target_include_directories(Country-Relocation-Ranking-System PRIVATE ${Boost_INCLUDE_DIRS})
-
 target_link_libraries(Country-Relocation-Ranking-System PRIVATE ${Boost_LIBRARIES})
+
+target_include_directories(tests PRIVATE ${CMAKE_SOURCE_DIR}/include ${Boost_INCLUDE_DIRS})
+target_link_libraries(tests PRIVATE gtest gmock gtest_main nlohmann_json::nlohmann_json ${Boost_LIBRARIES})
+target_link_libraries(tests PRIVATE Ws2_32)
 
 enable_testing()
 add_test(NAME tests COMMAND tests)
