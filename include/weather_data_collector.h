@@ -1,7 +1,9 @@
 #ifndef COUNTRY_RELOCATION_RANKING_SYSTEM_INCLUDE_WEATHER_DATA_COLLECTOR_H_
 #define COUNTRY_RELOCATION_RANKING_SYSTEM_INCLUDE_WEATHER_DATA_COLLECTOR_H_
 
-class WeatherDataCollector {
+#include "i_data_collector.h"
+
+#include <string>
 
 struct CityCoord {
   friend std::ostream& operator<<(std::ostream& os, const CityCoord& coord);
