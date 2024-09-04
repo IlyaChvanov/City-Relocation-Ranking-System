@@ -25,7 +25,8 @@ A user writes the city he wants to know about and gets marks from 1 to 10 which 
 
 ### Dependencies
 
-**Boost** is the only thing that(and compiler of course) *must* be installed in your PC and you also must enter path to it in CMakeLists.txt(str 6) 
+**PostgreSQL** *must* be installed in your PC and you must change pathes to dirs in CMakeLists.txt(str 6-7)
+**Boost** *must* be installed in your PC and you must enter path to it in CMakeLists.txt(str 8)
 
 ### Build Instructions
 
