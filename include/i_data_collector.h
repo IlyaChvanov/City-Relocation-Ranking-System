@@ -14,7 +14,8 @@ class IDataCollector {
  protected:
   virtual void ParseData(const nlohmann::json& json) = 0;
   nlohmann::json PerformGetRequest(const std::string& host,
-                                   const std::string& target) const;
+                                   const std::string& target,
+                                   const std::string& api_key = "") const;
 };
 
 
