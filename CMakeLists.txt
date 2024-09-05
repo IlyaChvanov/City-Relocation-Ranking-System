@@ -57,7 +57,7 @@ add_executable(tests
         src/i_data_collector.cpp
         src/weather_data_collector.cpp
         tests/test_main.cpp
-        tests/test_coord_from_name.cpp
+        tests/test_weather_data_collector.cpp
 )
 
 target_include_directories(tests

@@ -2,7 +2,6 @@
 
 #include <boost/beast/http.hpp>
 #include <boost/asio/ip/tcp.hpp>
-#include <nlohmann/json.hpp>
 #include <string>
 #include <iostream>
 
@@ -19,6 +18,7 @@ void WeatherDataCollector::FetchData(const std::string& city) {
   std::string target = "/point/monthly?lat= "+ lat + "&lon=" + lon +
       "&alt=43&start=2020-01-01&end=2020-12-31";
 
+  json_data_ = PerformGetRequest(host, target, meteostat_api_key_);
 }
 
 std::pair<std::string, std::string> WeatherDataCollector::GetParsedData() {
@@ -37,7 +37,9 @@ CityCoord WeatherDataCollector::CoordFromName(const std::string& city) {
   double lon = json[0].at("lon");
   return {lat, lon};
 }
-
+const nlohmann::json& WeatherDataCollector::GetJson() const {
+  return json_data_;
+}
 
 std::ostream& operator<<(std::ostream& os, const CityCoord& coord) {
   os << "CityCoord(" << coord.lat << ", " << coord.lon << ")";
