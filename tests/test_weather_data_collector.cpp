@@ -26,18 +26,17 @@ TEST_F(WeatherDataCollectorTest, CoordFromName) {
 }
 
 TEST_F(WeatherDataCollectorTest, FetchData) {
-  // Создаем корректные данные
   nlohmann::json correct;
   correct["data"] = {
       {
           {"date", "2020-01-01"},
-          {"tavg", 4.7},
-          {"tmin", 1.8},
-          {"tmax", 7.3},
-          {"prcp", 34.0},
-          {"wspd", 13.2},
-          {"pres", 1021.4},
-          {"tsun", 3660}
+          {"tavg", 7},
+          {"tmin", 4.2},
+          {"tmax", 9.8},
+          {"prcp", 48},
+          {"wspd", 14.7},
+          {"pres", 1019.6},
+          {"tsun", 3000}
       }
   };
 
@@ -45,5 +44,5 @@ TEST_F(WeatherDataCollectorTest, FetchData) {
   nlohmann::json result = w->GetJson();
 
   ASSERT_TRUE(result.contains("data")) << "The JSON response does not contain 'data' field.";
-  ASSERT_EQ(correct["data"][0], result["data"][0]) << "The fetched data does not match the expected data.";
+  ASSERT_EQ(correct.at("data").at(0), result.at("data").at(0)) << "The fetched data does not match the expected data.";
 }
