@@ -5,13 +5,11 @@ set(CMAKE_CXX_STANDARD 20)
 
 set(PostgreSQL_INCLUDE_DIR "D:/PostgreSQL/16/include")
 set(PostgreSQL_LIBRARY "D:/PostgreSQL/16/lib/libpq.lib")
-set(BOOST_ROOT "C:/Users/user/Desktop/boost_1_86_0")
+set(CURL_INCLUDE_DIR "C:/Users/user/.vcpkg-clion/vcpkg/installed/x64-windows/include")
+set(CURL_LIBRARY_DIR "C:/Users/user/.vcpkg-clion/vcpkg/installed/x64-windows/lib/libcurl.lib")
 
-find_package(Boost)
-
-if(NOT Boost_FOUND)
-    message(FATAL_ERROR "Boost not found!")
-endif()
+find_package(CURL REQUIRED)
+message(STATUS "CURL_INCLUDE_DIR: ${CURL_INCLUDE_DIR}")
 
 include(FetchContent)
 
@@ -38,8 +36,8 @@ FetchContent_MakeAvailable(googletest)
 FetchContent_MakeAvailable(libpqxx)
 FetchContent_MakeAvailable(json)
 
-
-add_executable(City-Relocation-Ranking-System main.cpp
+add_executable(City-Relocation-Ranking-System
+        main.cpp
         src/language_data_collector.cpp
         src/life_quality_data_collector.cpp
         src/postgres_db_manager.cpp
@@ -51,36 +49,35 @@ add_executable(City-Relocation-Ranking-System main.cpp
 
 target_include_directories(City-Relocation-Ranking-System
         PRIVATE ${CMAKE_SOURCE_DIR}/include
+        PRIVATE ${CURL_INCLUDE_DIR}
+)
+
+target_link_libraries(City-Relocation-Ranking-System
+        PRIVATE libpqxx::pqxx
+        PRIVATE nlohmann_json::nlohmann_json
+        PRIVATE CURL::libcurl
 )
 
 add_executable(tests
         src/i_data_collector.cpp
         src/weather_data_collector.cpp
         tests/test_main.cpp
-        tests/test_coord_from_name.cpp
+        tests/test_weather_data_collector.cpp
 )
 
 target_include_directories(tests
         PRIVATE ${CMAKE_SOURCE_DIR}/include
+        PRIVATE ${CURL_INCLUDE_DIR}
 )
+
 target_link_libraries(tests
-        PRIVATE
-        gtest
-        gmock
-        gtest_main
-        nlohmann_json::nlohmann_json
-        ${Boost_LIBRARIES}
+        PRIVATE gtest
+        PRIVATE gmock
+        PRIVATE gtest_main
+        PRIVATE nlohmann_json::nlohmann_json
+        PRIVATE CURL::libcurl
+        PRIVATE Ws2_32
 )
-target_link_libraries(City-Relocation-Ranking-System PRIVATE libpqxx::pqxx)
-target_link_libraries(City-Relocation-Ranking-System PRIVATE nlohmann_json::nlohmann_json)
-target_link_libraries(tests PRIVATE nlohmann_json::nlohmann_json)
-
-target_include_directories(City-Relocation-Ranking-System PRIVATE ${Boost_INCLUDE_DIRS})
-target_link_libraries(City-Relocation-Ranking-System PRIVATE ${Boost_LIBRARIES})
-
-target_include_directories(tests PRIVATE ${CMAKE_SOURCE_DIR}/include ${Boost_INCLUDE_DIRS})
-target_link_libraries(tests PRIVATE gtest gmock gtest_main nlohmann_json::nlohmann_json ${Boost_LIBRARIES})
-target_link_libraries(tests PRIVATE Ws2_32)
 
 enable_testing()
 add_test(NAME tests COMMAND tests)

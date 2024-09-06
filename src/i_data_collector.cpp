@@ -1,49 +1,47 @@
 #include "i_data_collector.h"
 
-#include <boost/asio.hpp>
-#include <boost/beast.hpp>
-#include <boost/beast/http.hpp>
+#include "curl/curl.h"
 #include <nlohmann/json.hpp>
 #include <string>
 #include <iostream>
 
-namespace beast = boost::beast;
-namespace http = beast::http;
-namespace net = boost::asio;
-using tcp = net::ip::tcp;
-using json = nlohmann::json;
+size_t WriteCallback(void* contents, size_t size, size_t nmemb, std::string* s) {
+  s->append(static_cast<char*>(contents), size * nmemb);
+  return size * nmemb;
+}
+
 nlohmann::json IDataCollector::PerformGetRequest(const std::string& host,
-                                                 const std::string& target,
+                                                 const std::string& url,
                                                  const std::string& api_key) const {
-  net::io_context ioc;
-  tcp::resolver resolver(ioc);
-  beast::tcp_stream stream(ioc);
-  auto const results = resolver.resolve(host, "80");
-  stream.connect(results);
+  CURL* hnd = curl_easy_init();
+  std::string response_string;
 
-  http::request<http::string_body> req{http::verb::get, target, 11};
-  req.set(http::field::host, host);
-  req.set(http::field::user_agent, "Boost.Beast");
+  if(hnd) {
+    curl_easy_setopt(hnd, CURLOPT_CUSTOMREQUEST, "GET");
+    curl_easy_setopt(hnd, CURLOPT_URL, url.c_str());
 
-  if (!api_key.empty()) {
-    req.set(http::field::authorization, "Bearer " + api_key);
+    struct curl_slist *headers = NULL;
+    headers = curl_slist_append(headers, ("x-rapidapi-key: " + api_key).c_str());
+    headers = curl_slist_append(headers, ("x-rapidapi-host: " + host).c_str());
+    curl_easy_setopt(hnd, CURLOPT_HTTPHEADER, headers);
+
+    // Установка обратного вызова для записи данных в строку
+    curl_easy_setopt(hnd, CURLOPT_WRITEFUNCTION, WriteCallback);
+    curl_easy_setopt(hnd, CURLOPT_WRITEDATA, &response_string);
+
+    CURLcode ret = curl_easy_perform(hnd);
+
+    if (ret != CURLE_OK) {
+      std::cerr << "curl_easy_perform() failed: " << curl_easy_strerror(ret) << std::endl;
+      return {};
+    }
+
+    // Освобождение ресурсов
+    curl_easy_cleanup(hnd);
+    curl_slist_free_all(headers);
+
+    return nlohmann::json::parse(response_string);
   }
 
-  http::write(stream, req);
-  beast::flat_buffer buffer;
-  http::response<http::dynamic_body> res;
-  http::read(stream, buffer, res);
-
-  if (res.result() != http::status::ok) {
-    std::cerr << "HTTP Error: " << res.result_int() << std::endl;
-    return {};
-  }
-
-  beast::error_code ec;
-  stream.socket().shutdown(tcp::socket::shutdown_both, ec);
-  if (ec && ec != beast::errc::not_connected) {
-    throw beast::system_error{ec};
-  }
-
-  return json::parse(beast::buffers_to_string(res.body().data()));
+  return {};
 }
