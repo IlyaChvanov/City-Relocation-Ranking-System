@@ -8,10 +8,10 @@ A user writes the city he wants to know about and gets marks from 1 to 10 which 
 
 - **Metrics Collection**: Aggregates data on quality of life, climate conditions, and language difficulty.
 - **City Ranking**: Sorts cities based on the difficulty of relocating, integrating the collected metrics into a comprehensive score.
-- **Data Storage and Management**: Utilizes a PostgreSQL database for storing and managing collected data.
-- **HTTP Requests**: Employs Boost libraries for making HTTP requests to various APIs for data collection.
+- **Data Storage and Management**: Utilizes a `PostgreSQL` database for storing and managing collected data.
+- **HTTP Requests**: Employs `curl` libraries for making HTTP requests to various APIs for data collection.
 - **JSON Parsing**: Uses `nlohmann/json` for handling and parsing JSON data.
-- **Testing**: Incorporates Google Test for unit testing to ensure code reliability.
+- **Testing**: Incorporates `Google Test` for unit testing to ensure code reliability.
 - **Code Style**: https://google.github.io/styleguide/cppguide.html
 
 ## Technologies Used
