@@ -38,4 +38,5 @@ A user writes the city he wants to know about and gets marks from 1 to 10 which 
 3. **Run City Relocation Ranking System**
 
 ### Structure
-<img src="img/UML_3.png">
+<img src="img/UML_4.png">
+

@@ -8,8 +8,10 @@ struct City {
   double points_climate;
   double points_life_quality;
   double points_language;
-  double point_common; //0-10
+  double points_common; //0-10
   int rating_position;
+ private:
+  void CountPoints();
 };
 
 #endif //COUNTRY_RELOCATION_RANKING_SYSTEM_INCLUDE_CITY_H_
