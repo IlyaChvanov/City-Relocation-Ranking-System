@@ -9,7 +9,6 @@ set(CURL_INCLUDE_DIR "C:/Users/user/.vcpkg-clion/vcpkg/installed/x64-windows/inc
 set(CURL_LIBRARY_DIR "C:/Users/user/.vcpkg-clion/vcpkg/installed/x64-windows/lib/libcurl.lib")
 
 find_package(CURL REQUIRED)
-message(STATUS "CURL_INCLUDE_DIR: ${CURL_INCLUDE_DIR}")
 
 include(FetchContent)
 
@@ -41,10 +40,12 @@ add_executable(City-Relocation-Ranking-System
         src/language_data_collector.cpp
         src/life_quality_data_collector.cpp
         src/postgres_db_manager.cpp
-        src/statistics_analyzer.cpp
         src/weather_data_collector.cpp
         src/UI.cpp
         src/i_data_collector.cpp
+        include/weather_analysis.h
+        include/language_analysis.h
+        include/life_quality_analysis.h
 )
 
 target_include_directories(City-Relocation-Ranking-System
