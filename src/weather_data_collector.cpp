@@ -12,7 +12,7 @@ void WeatherDataCollector::FetchData(const std::string& city) {
   std::string url = "https://meteostat.p.rapidapi.com/point/monthly?"
                     "lat=" + lat + "&lon=" + lon + "&alt=43&start=2020-01-01&end=2020-12-31";
 
-  json_data_ = PerformGetRequest(host, url, meteostat_api_key_);
+  json_data_ = PerformGetRequest(host, url, rapid_api_key_);
 }
 
 std::pair<std::string, std::string> WeatherDataCollector::GetParsedData() {
@@ -25,7 +25,7 @@ void WeatherDataCollector::ParseData(const nlohmann::json& json) {
 CityCoord WeatherDataCollector::CoordFromName(const std::string& city) {
   std::string url = "https://open-weather13.p.rapidapi.com/city/" + city + "/EN";
   std::string host = "open-weather13.p.rapidapi.com";
-  auto json = PerformGetRequest(host, url, "09f92165camsh8fa691b469e8ed0p134d18jsn96645ff43329");
+  auto json = PerformGetRequest(host, url, rapid_api_key_);
   double lat = json.at("coord").at("lat");
   double lon = json.at("coord").at("lon");
   return {lat, lon};

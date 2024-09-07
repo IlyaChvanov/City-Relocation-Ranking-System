@@ -14,7 +14,7 @@ void UI::PrintTopCities(size_t cities_num) const {
     << "climate: " << city.points_climate << '\n'
     << "life quality: " << city.points_life_quality << '\n'
     << "language complexity: " << city.points_language << '\n'
-    << "points in common: " << city.point_common << '\n'
+    << "points in common: " << city.points_common << '\n'
     << "_______________________________" << '\n';
   }
 }
@@ -33,5 +33,5 @@ void UI::PrintCity(std::string_view city_to_find) const {
        << "climate: " << city.points_climate << '\n'
        << "life quality: " << city.points_life_quality << '\n'
        << "language complexity: " << city.points_language << '\n'
-      << "points in common: " << city.point_common;
+      << "points in common: " << city.points_common;
 }
