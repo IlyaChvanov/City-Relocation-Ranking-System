@@ -17,7 +17,7 @@ A user writes the city he wants to know about and gets marks from 1 to 10 which 
 ## Technologies Used
 
 - **pqxx**: C++ library for interacting with PostgreSQL databases.
-- **Boost.Beast**: Part of the Boost library used for HTTP requests and handling.
+- **curl**: HTTPS requests and handling.
 - **nlohmann/json**: A JSON library for C++ used for parsing and manipulating JSON data.
 - **Google Test**: A testing framework for C++ used to create and run unit tests.
 
@@ -26,7 +26,7 @@ A user writes the city he wants to know about and gets marks from 1 to 10 which 
 ### Dependencies
 
 **PostgreSQL** *must* be installed in your PC and you must change pathes to dirs in CMakeLists.txt(str 6-7)
-**Boost** *must* be installed in your PC and you must enter path to it in CMakeLists.txt(str 8)
+*curl**
 
 ### Build Instructions
 
@@ -39,3 +39,4 @@ A user writes the city he wants to know about and gets marks from 1 to 10 which 
 
 ### Structure
 <img src="img/UML_4.png">
+
