@@ -14,11 +14,9 @@ struct CityCoord {
 class WeatherDataCollector : public IDataCollector {
  public:
   void FetchData(const std::string& city) override;
-  std::pair<std::string, std::string> GetParsedData() override;
   CityCoord CoordFromName(const std::string& city);
   const nlohmann::json& GetJson() const;
  private:
-  void ParseData(const nlohmann::json& json) override;
   std::pair<std::string, std::string> parsed_data_;
   nlohmann::json json_data_;
   const std::string rapid_api_key_ = "09f92165camsh8fa691b469e8ed0p134d18jsn96645ff43329";
