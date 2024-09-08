@@ -6,6 +6,7 @@ The **City Relocation Ranking System** is designed to help individuals evaluate 
 A user writes the city he wants to know about and gets marks from 1 to 10 which show how good this city is. The result will be saved in DB and will be used in ranking with following cities. 
 ## Features
 
+- **Pattern**: The cities are created using the `builder` pattern;
 - **Metrics Collection**: Aggregates data on quality of life, climate conditions, and language difficulty.
 - **City Ranking**: Sorts cities based on the difficulty of relocating, integrating the collected metrics into a comprehensive score.
 - **Data Storage and Management**: Utilizes a `PostgreSQL` database for storing and managing collected data.
