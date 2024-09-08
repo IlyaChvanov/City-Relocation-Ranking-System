@@ -25,8 +25,7 @@ A user writes the city he wants to know about and gets marks from 1 to 10 which 
 
 ### Dependencies
 
-**PostgreSQL** *must* be installed in your PC and you must change pathes to dirs in CMakeLists.txt(str 6-7)
-*curl**
+**PostgreSQL** and **curl** *must* be installed in your PC and you must change pathes to dirs in CMakeLists.txt(str 6-7)
 
 ### Build Instructions
 
