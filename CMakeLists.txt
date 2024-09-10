@@ -64,8 +64,10 @@ target_link_libraries(City-Relocation-Ranking-System
 add_executable(tests
         src/i_data_collector.cpp
         src/weather_data_collector.cpp
+        src/weather_analysis.cpp
         tests/test_main.cpp
         tests/test_weather_data_collector.cpp
+        tests/test_weather_analysis.cpp
 )
 
 target_include_directories(tests
