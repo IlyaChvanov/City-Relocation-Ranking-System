@@ -19,7 +19,7 @@ class IDataCollector {
 
 class ErrorConnect : public std::exception {
  public:
-  ErrorConnect(const std::string& error) : message(error){};
+  explicit ErrorConnect(const std::string& error) : message(error){};
   const char* what() const noexcept override {
     return message.c_str();
   }

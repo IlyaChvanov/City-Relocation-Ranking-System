@@ -21,11 +21,11 @@ TEST_F(WeatherDataCollectorTest, CoordFromName) {
   const double epsilon = 1e-1; // epsilon = 1e-1: это примерно 11
   // км (этого обычно достаточно для идентификации одного города)
 
-  ASSERT_NEAR(london->lat, result.lat, epsilon);
-  ASSERT_NEAR(london->lon, result.lon, epsilon);
+  EXPECT_NEAR(london->lat, result.lat, epsilon);
+  EXPECT_NEAR(london->lon, result.lon, epsilon);
 }
 
-TEST_F(WeatherDataCollectorTest, FetchData) {
+TEST_F(WeatherDataCollectorTest, FetchDataGood) {
   nlohmann::json correct;
   correct["data"] = {
       {
@@ -43,6 +43,10 @@ TEST_F(WeatherDataCollectorTest, FetchData) {
   w->FetchData("London");
   nlohmann::json result = w->GetJson();
 
-  ASSERT_TRUE(result.contains("data")) << "The JSON response does not contain 'data' field.";
-  ASSERT_EQ(correct.at("data").at(0), result.at("data").at(0)) << "The fetched data does not match the expected data.";
+  EXPECT_TRUE(result.contains("data")) << "The JSON response does not contain 'data' field.";
+  EXPECT_EQ(correct.at("data").at(0), result.at("data").at(0)) << "The fetched data does not match the expected data.";
+}
+
+TEST_F(WeatherDataCollectorTest, CityDoNotExist) {
+  EXPECT_THROW(w->FetchData("Neverland"), ErrorConnect);
 }

@@ -28,7 +28,7 @@ CityCoord WeatherDataCollector::CoordFromName(const std::string& city) {
     if (json.at("message") == "You have exceeded the MONTHLY quota for Requests on your current plan, BASIC. Upgrade your plan at https\n"
                               "://rapidapi.com/worldapi/api/open-weather13") {
       throw ErrorConnect("You have exceeded the MONTHLY quota for Requests");
-    } else if (json.at("message") == "Not found") {
+    } else if (json.at("message") == "city not found") {
       throw ErrorConnect("Incorrect city name");
     }
   }
