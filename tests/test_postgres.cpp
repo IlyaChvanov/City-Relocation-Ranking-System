@@ -1,0 +1,45 @@
+#include "postgres_db_manager.h"
+#include "gtest/gtest.h"
+#include "pqxx/pqxx"
+
+struct PostgresTest : public testing::Test {
+  std::string dbname = "CityRelocation";
+  std::string user = "postgres";
+  std::string password = "58915891i";
+
+  std::string connection_str =
+      "dbname=" + dbname +
+      " user=" + user +
+      " password=" + password;
+
+  PostgresDBManager* DB;
+  pqxx::connection* conn = new pqxx::connection(connection_str);
+  City* test_city;
+
+  void SetUp() override {;
+    DB = new PostgresDBManager;
+    test_city = new City{"London", 1.0, 2.0, 3.0, 4.0, 1};
+    pqxx::work txn(*conn);
+  }
+  void TearDown() override {
+    delete DB;
+    delete test_city;
+    delete conn;
+  }
+};
+
+TEST_F(PostgresTest, InsertCity) {
+  DB->InsertCity(*test_city);
+  pqxx::work txn(*conn);
+  pqxx::result res = txn.exec("SELECT * FROM Cities WHERE city_name = 'London'");
+  EXPECT_EQ(res.size(), 1);
+  EXPECT_EQ(res[0]["city_name"].as<std::string>(), test_city->name);
+  EXPECT_DOUBLE_EQ(res[0]["climate_points"].as<double>(), test_city->points_climate);
+  EXPECT_DOUBLE_EQ(res[0]["life_quality_points"].as<double>(), test_city->points_life_quality);
+  EXPECT_DOUBLE_EQ(res[0]["language_points"].as<double>(), test_city->points_language);
+  EXPECT_DOUBLE_EQ(res[0]["common_points"].as<double>(), test_city->points_common);
+  EXPECT_EQ(res[0]["rating_position"].as<int>(), test_city->rating_position);
+
+  txn.exec("DELETE FROM Cities WHERE city_name = 'London'");
+  txn.commit();
+}
