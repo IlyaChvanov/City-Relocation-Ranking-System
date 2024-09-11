@@ -36,8 +36,7 @@ nlohmann::json IDataCollector::PerformGetRequest(const std::string& host,
       return {};
     }
 
-    // Освобождение ресурсов
-    curl_easy_cleanup(hnd);
+     curl_easy_cleanup(hnd);
     curl_slist_free_all(headers);
 
     return nlohmann::json::parse(response_string);

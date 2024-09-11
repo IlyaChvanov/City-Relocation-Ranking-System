@@ -65,14 +65,17 @@ add_executable(tests
         src/i_data_collector.cpp
         src/weather_data_collector.cpp
         src/weather_analysis.cpp
+        src/postgres_db_manager.cpp
         tests/test_main.cpp
         tests/test_weather_data_collector.cpp
         tests/test_weather_analysis.cpp
+        tests/test_postgres.cpp
 )
 
 target_include_directories(tests
         PRIVATE ${CMAKE_SOURCE_DIR}/include
         PRIVATE ${CURL_INCLUDE_DIR}
+        PRIVATE ${PostgreSQL_INCLUDE_DIR}
 )
 
 target_link_libraries(tests
@@ -81,6 +84,7 @@ target_link_libraries(tests
         PRIVATE gtest_main
         PRIVATE nlohmann_json::nlohmann_json
         PRIVATE CURL::libcurl
+        PRIVATE libpqxx::pqxx
         PRIVATE Ws2_32
 )
 

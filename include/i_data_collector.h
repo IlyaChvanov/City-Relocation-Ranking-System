@@ -17,9 +17,9 @@ class IDataCollector {
                                    const std::string& api_key = "") const;
 };
 
-class ErrorConnect : public std::exception {
+class APIConnectionError : public std::exception {
  public:
-  explicit ErrorConnect(const std::string& error) : message(error){};
+  explicit APIConnectionError(const std::string& error) : message(error){};
   const char* what() const noexcept override {
     return message.c_str();
   }

@@ -19,7 +19,7 @@ class WeatherDataCollector : public IDataCollector {
  private:
   std::pair<std::string, std::string> parsed_data_;
   nlohmann::json json_data_;
-  const std::string rapid_api_key_ = "09f92165camsh8fa691b469e8ed0p134d18jsn96645ff43329";
+  const std::string rapid_api_key_ = "6c68e5896fmsh46989a323b71aa9p1e1246jsna881987f1a3a";
 };
 
 #endif //COUNTRY_RELOCATION_RANKING_SYSTEM_INCLUDE_WEATHER_DATA_COLLECTOR_H_

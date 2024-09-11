@@ -13,7 +13,7 @@ void WeatherDataCollector::FetchData(const std::string& city) {
     std::string url = "https://meteostat.p.rapidapi.com/point/monthly?"
                       "lat=" + lat + "&lon=" + lon + "&alt=43&start=2020-01-01&end=2020-12-31";
     json_data_ = PerformGetRequest(host, url, rapid_api_key_);
-  } catch (const ErrorConnect& e) {
+  } catch (const APIConnectionError& e) {
     std::cerr << e.what();
     throw;
   }
@@ -27,9 +27,9 @@ CityCoord WeatherDataCollector::CoordFromName(const std::string& city) {
   if (json.contains("message")) {
     if (json.at("message") == "You have exceeded the MONTHLY quota for Requests on your current plan, BASIC. Upgrade your plan at https\n"
                               "://rapidapi.com/worldapi/api/open-weather13") {
-      throw ErrorConnect("You have exceeded the MONTHLY quota for Requests");
+      throw APIConnectionError("You have exceeded the MONTHLY quota for Requests");
     } else if (json.at("message") == "city not found") {
-      throw ErrorConnect("Incorrect city name");
+      throw APIConnectionError("Incorrect city name");
     }
   }
   double lat = json.at("coord").at("lat");
