@@ -44,3 +44,13 @@ TEST_F(PostgresTest, InsertCity) {
   txn.exec("DELETE FROM Cities WHERE city_name = 'London'");
   txn.commit();
 }
+
+TEST_F(PostgresTest, GetCity) {
+  const auto london = DB->GetCity("london");
+  EXPECT_EQ(london.name, test_city->name);
+  EXPECT_EQ(london.points_climate, test_city->points_climate);
+  EXPECT_EQ(london.points_language, test_city->points_language);
+  EXPECT_EQ(london.points_common, test_city->points_common);
+  EXPECT_EQ(london.points_life_quality, test_city->points_life_quality);
+  EXPECT_EQ(london.rating_position, test_city->rating_position);
+}
