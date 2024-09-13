@@ -12,7 +12,7 @@ class PostgresDBManager : public IDBManager{
   PostgresDBManager();
   void InsertCity(const City& city) override;
   std::vector<City> GetCities(size_t num) const override;
-  City GetCity(std::string_view city) const override;
+  City GetCity(const std::string& city) const override;
  private:
   std::shared_ptr<pqxx::connection> connection_;
 };

@@ -18,10 +18,13 @@ PostgresDBManager::PostgresDBManager() {
 
 void PostgresDBManager::InsertCity(const City& city)  {
   try {
+    std::string city_name;
+    std::transform(city.name.begin(), city.name.end(), std::back_inserter(city_name),
+                   [](const char c) { return tolower(c); });
     pqxx::work txn(*connection_);
     std::string query = "INSERT INTO Cities (city_name, climate_points, life_quality_points, language_points, common_points, rating_position) "
                         "VALUES (" +
-        txn.quote(city.name) + ", " +
+        txn.quote(city_name) + ", " +
         txn.quote(city.points_climate) + ", " +
         txn.quote(city.points_life_quality) + ", " +
         txn.quote(city.points_language) + ", " +
@@ -36,4 +39,27 @@ void PostgresDBManager::InsertCity(const City& city)  {
   }
 }
 std::vector<City> PostgresDBManager::GetCities(size_t num) const {};
-City PostgresDBManager::GetCity(std::string_view city) const {};
+City PostgresDBManager::GetCity(const std::string& city) const {
+  std::string city_name;
+  std::transform(city.begin(), city.end(), std::back_inserter(city_name),
+                 [](const char c) { return tolower(c); });
+
+  pqxx::read_transaction txn(*connection_);
+  std::string query = "SELECT * FROM Cities "
+                      " WHERE city_name = " + txn.quote(city);
+  const auto result = txn.exec(query);
+  if (result.empty()) {
+    std::cerr << "City not found" << '\n';
+    throw NoCityInDB("city not found");
+  }
+  City response;
+  const pqxx::row row = result[0];
+  response.name = row["city_name"].as<std::string>();
+  response.points_climate = row["climate_points"].as<double>();
+  response.points_life_quality = row["life_quality_points"].as<double>();
+  response.points_language = row["language_points"].as<double>();
+  response.points_common = row["common_points"].as<double>();
+  response.rating_position= row["rating_position"].as<int>();
+
+  return response;
+};

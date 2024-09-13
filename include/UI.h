@@ -15,7 +15,7 @@ class UI {
   explicit UI(DB db);
   void PrintTopCities(size_t cities_num) const;
   std::string AskAndGetCity() const;
-  void PrintCity(std::string_view city) const;
+  void PrintCity(const std::string& city_to_find) const;
  private:
   const DB db_;
 };
