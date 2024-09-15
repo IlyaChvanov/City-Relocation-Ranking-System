@@ -23,8 +23,12 @@ struct PostgresTest : public testing::Test {
     test_city = std::make_unique<City>("london", 1.0, 2.0, 3.0, 4.0, 5);
     DB->InsertCity(*test_city);
   }
+
   void TearDown() override {
     DB->DeleteCity("london");
+    DB->DeleteCity("first");
+    DB->DeleteCity("second");
+    DB->DeleteCity("third");
   }
 };
 
@@ -48,4 +52,22 @@ TEST_F(PostgresTest, GetCity) {
   EXPECT_EQ(london.points_common, test_city->points_common);
   EXPECT_EQ(london.points_life_quality, test_city->points_life_quality);
   EXPECT_EQ(london.rating_position, test_city->rating_position);
+}
+
+
+bool operator==(const City& first, const City& second) {
+  return first.name == second.name;
+}
+TEST_F(PostgresTest, GetCities) {
+  City first{"first", 1.0, 1.0, 1.0, 1.0, 1};
+  City second{"second", 1.0, 1.0, 1.0, 1.0, 2};
+  City third{"third", 1.0, 1.0, 1.0, 1.0, 3};
+  DB->InsertCity(first);
+  DB->InsertCity(second);
+  DB->InsertCity(third);
+
+  const auto cities = DB->GetCities(3);
+  std::vector<City> correct{first, second, third};
+  EXPECT_EQ(cities.size(), 3);
+  EXPECT_EQ(cities, correct);
 }

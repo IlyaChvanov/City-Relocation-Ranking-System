@@ -38,7 +38,29 @@ void PostgresDBManager::InsertCity(const City& city)  {
     std::cerr << "Error inserting city: " << e.what() << std::endl;
   }
 }
-std::vector<City> PostgresDBManager::GetCities(size_t num) const {};
+
+std::vector<City> PostgresDBManager::GetCities(size_t num) const {
+  std::vector<City> ans;
+  ans.reserve(num);
+  pqxx::read_transaction txn(*connection_);
+  std::string query = "SELECT * FROM Cities "
+                      "ORDER BY rating_position "
+                      "LIMIT " + std::to_string(num);
+  const auto result = txn.exec(query);
+  auto row_to_city = [](const pqxx::row& row) {
+    return City{
+        row.at("city_name").as<std::string>(),
+        row.at("climate_points").as<double>(),
+        row.at("language_points").as<double>(),
+        row.at("life_quality_points").as<double>(),
+        row.at("common_points").as<double>(),
+        row.at("rating_position").as<int>()
+    };
+  };
+  std::transform(result.begin(), result.end(), std::back_inserter(ans), row_to_city);
+  return ans;
+}
+
 City PostgresDBManager::GetCity(const std::string& city) const {
   std::string city_name;
   std::transform(city.begin(), city.end(), std::back_inserter(city_name),
@@ -46,7 +68,7 @@ City PostgresDBManager::GetCity(const std::string& city) const {
 
   pqxx::read_transaction txn(*connection_);
   std::string query = "SELECT * FROM Cities "
-                      " WHERE city_name = " + txn.quote(city);
+                      " WHERE city_name = " +  MakeCorrectName(city);
   const auto result = txn.exec(query);
   if (result.empty()) {
     std::cerr << "City not found" << '\n';
