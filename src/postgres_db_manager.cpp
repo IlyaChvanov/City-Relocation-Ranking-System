@@ -62,4 +62,17 @@ City PostgresDBManager::GetCity(const std::string& city) const {
   response.rating_position= row["rating_position"].as<int>();
 
   return response;
+}
+void PostgresDBManager::DeleteCity(const std::string& city) const {
+  pqxx::work txn(*connection_);
+  const std::string query = "DELETE FROM Cities "
+                            "WHERE city_name = " + MakeCorrectName(city);
+  txn.exec(query);
+  txn.commit();
+}
+std::string PostgresDBManager::MakeCorrectName(const std::string& name) const {
+  std::string city_name;
+  std::transform(name.begin(), name.end(), std::back_inserter(city_name),
+                 [](const char c) { return tolower(c); });
+  return connection_->quote(city_name);
 };

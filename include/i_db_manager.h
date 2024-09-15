@@ -10,6 +10,7 @@ class IDBManager {
   virtual void InsertCity(const City& city)  = 0;
   virtual std::vector<City> GetCities(size_t num) const = 0;
   virtual City GetCity(const std::string& city) const = 0;
+  virtual void DeleteCity(const std::string& city) const = 0;
 };
 
 class DBConnectionError : public std::exception {

@@ -1,6 +1,7 @@
 #include "postgres_db_manager.h"
 #include "gtest/gtest.h"
 #include "pqxx/pqxx"
+#include <memory>
 
 struct PostgresTest : public testing::Test {
   std::string dbname = "CityRelocation";
@@ -12,27 +13,24 @@ struct PostgresTest : public testing::Test {
       " user=" + user +
       " password=" + password;
 
-  PostgresDBManager* DB;
-  pqxx::connection* conn = new pqxx::connection(connection_str);
-  City* test_city;
-  pqxx::work* txn;
-  void SetUp() override {;
-    DB = new PostgresDBManager;
-    test_city = new City{"london", 1.0, 2.0, 3.0, 4.0, 1};
-    txn = new pqxx::work(*conn);
+  std::unique_ptr<PostgresDBManager> DB;
+  std::unique_ptr<pqxx::connection> conn;
+  std::unique_ptr<City> test_city;
+
+  void SetUp() override {
+    conn = std::make_unique<pqxx::connection>(connection_str);
+    DB = std::make_unique<PostgresDBManager>();
+    test_city = std::make_unique<City>("london", 1.0, 2.0, 3.0, 4.0, 5);
     DB->InsertCity(*test_city);
   }
   void TearDown() override {
-    txn->exec("DELETE FROM Cities WHERE city_name = 'london'");
-    txn->commit();
-    delete DB;
-    delete test_city;
-    delete conn;
+    DB->DeleteCity("london");
   }
 };
 
 TEST_F(PostgresTest, InsertCity) {
-  pqxx::result res = txn->exec("SELECT * FROM Cities WHERE city_name = 'london'");
+  pqxx::read_transaction read_txn(*conn);
+  pqxx::result res = read_txn.exec("SELECT * FROM Cities WHERE city_name = 'london'");
   EXPECT_EQ(res.size(), 1);
   EXPECT_EQ(res[0]["city_name"].as<std::string>(), test_city->name);
   EXPECT_DOUBLE_EQ(res[0]["climate_points"].as<double>(), test_city->points_climate);
@@ -40,9 +38,6 @@ TEST_F(PostgresTest, InsertCity) {
   EXPECT_DOUBLE_EQ(res[0]["language_points"].as<double>(), test_city->points_language);
   EXPECT_DOUBLE_EQ(res[0]["common_points"].as<double>(), test_city->points_common);
   EXPECT_EQ(res[0]["rating_position"].as<int>(), test_city->rating_position);
-
-  txn.exec("DELETE FROM Cities WHERE city_name = 'London'");
-  txn.commit();
 }
 
 TEST_F(PostgresTest, GetCity) {
