@@ -12,7 +12,6 @@ find_package(CURL REQUIRED)
 
 include(FetchContent)
 
-# Fetching libs
 FetchContent_Declare(
         googletest
         GIT_REPOSITORY https://github.com/google/googletest.git
