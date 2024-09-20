@@ -27,6 +27,13 @@ string UI::AskAndGetCity() const {
   return city;
 }
 
+string UI::AskAndGetCountry() const {
+  cout << "Enter the country name: " << '\n';
+  string country;
+  std::cin >> country;
+  return country;
+}
+
 void UI::PrintCity(const std::string& city_to_find) const {
   auto city = db_->GetCity(city_to_find);
   cout << city.rating_position << ": " << "\033[1m" << city.name << "\033[1m" << '\n'

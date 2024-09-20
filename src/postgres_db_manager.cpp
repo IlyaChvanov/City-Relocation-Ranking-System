@@ -1,6 +1,7 @@
 #include "postgres_db_manager.h"
 
 #include "iostream"
+
 PostgresDBManager::PostgresDBManager() {
   std::string dbname = "CityRelocation";
   std::string user = "postgres";
@@ -18,13 +19,11 @@ PostgresDBManager::PostgresDBManager() {
 
 void PostgresDBManager::InsertCity(const City& city)  {
   try {
-    std::string city_name;
-    std::transform(city.name.begin(), city.name.end(), std::back_inserter(city_name),
-                   [](const char c) { return tolower(c); });
+    auto city_name = MakeCorrectName(city.name);
     pqxx::work txn(*connection_);
     std::string query = "INSERT INTO Cities (city_name, climate_points, life_quality_points, language_points, common_points, rating_position) "
                         "VALUES (" +
-        txn.quote(city_name) + ", " +
+        city_name + ", " +
         txn.quote(city.points_climate) + ", " +
         txn.quote(city.points_life_quality) + ", " +
         txn.quote(city.points_language) + ", " +
@@ -72,7 +71,7 @@ City PostgresDBManager::GetCity(const std::string& city) const {
   const auto result = txn.exec(query);
   if (result.empty()) {
     std::cerr << "City not found" << '\n';
-    throw NoCityInDB("city not found");
+    throw NoDataInDB("city not found");
   }
   City response;
   const pqxx::row row = result[0];
@@ -85,16 +84,34 @@ City PostgresDBManager::GetCity(const std::string& city) const {
 
   return response;
 }
+
 void PostgresDBManager::DeleteCity(const std::string& city) const {
   pqxx::work txn(*connection_);
-  const std::string query = "DELETE FROM Cities "
+  const std::string query = "DELETE FROM cities "
                             "WHERE city_name = " + MakeCorrectName(city);
   txn.exec(query);
   txn.commit();
 }
+
 std::string PostgresDBManager::MakeCorrectName(const std::string& name) const {
   std::string city_name;
   std::transform(name.begin(), name.end(), std::back_inserter(city_name),
                  [](const char c) { return tolower(c); });
   return connection_->quote(city_name);
-};
+}
+
+double PostgresDBManager::GetCountryLifeQuality(const std::string& country) const {
+  try {
+    pqxx::read_transaction txn(*connection_);
+    const std::string query = "SELECT life_quality_points FROM countries_life_quality "
+                              "WHERE country_name = " + MakeCorrectName(country);
+    const auto result = txn.exec(query);
+
+    if (result.empty()) {
+      throw NoDataInDB("No country in database");
+    }
+    return result.at(0).at(0).as<double>();
+  } catch (const NoDataInDB& e) {
+    std::cerr << "Sorry, country " + country + " is not allowed";
+  }
+}

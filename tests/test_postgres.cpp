@@ -71,3 +71,7 @@ TEST_F(PostgresTest, GetCities) {
   EXPECT_EQ(cities.size(), 3);
   EXPECT_EQ(cities, correct);
 }
+
+TEST_F(PostgresTest, GetCountryLifeQuality) {
+  EXPECT_DOUBLE_EQ(DB->GetCountryLifeQuality("Denmark"), 84.55);
+}

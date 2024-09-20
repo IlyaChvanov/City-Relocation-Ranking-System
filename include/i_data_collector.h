@@ -6,10 +6,9 @@
 
 #include "nlohmann/json.hpp"
 
-
 class IDataCollector {
  public:
-  virtual void FetchData(const std::string& city) = 0;
+  virtual void FetchData(const std::string&) = 0;
   virtual ~IDataCollector() = default;
  protected:
   nlohmann::json PerformGetRequest(const std::string& host,
