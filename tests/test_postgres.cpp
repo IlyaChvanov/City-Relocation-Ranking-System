@@ -74,4 +74,10 @@ TEST_F(PostgresTest, GetCities) {
 
 TEST_F(PostgresTest, GetCountryLifeQuality) {
   EXPECT_DOUBLE_EQ(DB->GetCountryLifeQuality("Denmark"), 84.55);
+  EXPECT_THROW(DB->GetCountryLifeQuality("Neverland"), NoDataInDB);
+}
+
+TEST_F(PostgresTest, GetRankOfLanguage) {
+  EXPECT_EQ(DB->GetRankOfLanguage("English"), 1);
+  EXPECT_EQ(DB->GetRankOfLanguage("a_non_existing_lang"), -1);
 }

@@ -113,5 +113,6 @@ double PostgresDBManager::GetCountryLifeQuality(const std::string& country) cons
     return result.at(0).at(0).as<double>();
   } catch (const NoDataInDB& e) {
     std::cerr << "Sorry, country " + country + " is not allowed";
+    throw;
   }
 }

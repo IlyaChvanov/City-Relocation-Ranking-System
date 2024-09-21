@@ -44,7 +44,6 @@ add_executable(City-Relocation-Ranking-System
         src/i_data_collector.cpp
         include/weather_analysis.h
         include/language_analysis.h
-        include/life_quality_analysis.h
         src/weather_analysis.cpp
         src/city_builder.cpp
 )

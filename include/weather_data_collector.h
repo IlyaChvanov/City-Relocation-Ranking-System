@@ -10,7 +10,6 @@ struct CityCoord {
   double lon;
 };
 
-
 class WeatherDataCollector : public IDataCollector {
  public:
   void FetchData(const std::string& city) override;
