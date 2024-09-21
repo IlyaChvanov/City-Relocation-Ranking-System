@@ -46,6 +46,7 @@ add_executable(City-Relocation-Ranking-System
         include/language_analysis.h
         src/weather_analysis.cpp
         src/city_builder.cpp
+        src/language_analysis.cpp
 )
 
 target_include_directories(City-Relocation-Ranking-System
@@ -68,6 +69,8 @@ add_executable(tests
         tests/test_weather_data_collector.cpp
         tests/test_weather_analysis.cpp
         tests/test_postgres.cpp
+        src/language_analysis.cpp
+        tests/test_language_analysis.cpp
 )
 
 target_include_directories(tests

@@ -7,10 +7,10 @@ class WeatherAnalysis : public IDataAnalysis {
  public:
   explicit WeatherAnalysis(nlohmann::json json);
   void Analyse() override;
-  double GetPoints() const;
+  double GetPoints() const override;
   double GetAvgTemp() const;
  private:
-  void ParseJson(const nlohmann::json& data) override;
+  void ParseJson(const nlohmann::json& data);
   std::vector<double> temperatures_;
   double avg_temp_;
   double points_; //0-10

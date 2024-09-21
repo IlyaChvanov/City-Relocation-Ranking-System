@@ -9,8 +9,7 @@ class IDataAnalysis {
  public:
   virtual ~IDataAnalysis() = default;
   virtual void Analyse() = 0;
- protected:
-  virtual void ParseJson(const nlohmann::json& data) = 0;
+  virtual double GetPoints() const = 0;
 };
 
 #endif //COUNTRY_RELOCATION_RANKING_SYSTEM_INCLUDE_I_DATA_ANALYSIS_H_
