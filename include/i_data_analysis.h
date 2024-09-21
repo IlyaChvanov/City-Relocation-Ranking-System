@@ -8,7 +8,7 @@
 class IDataAnalysis {
  public:
   virtual ~IDataAnalysis() = default;
-  virtual void Analyse(const nlohmann::json& data) = 0;
+  virtual void Analyse() = 0;
  protected:
   virtual void ParseJson(const nlohmann::json& data) = 0;
 };

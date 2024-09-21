@@ -9,8 +9,8 @@ void WeatherAnalysis::ParseJson(const nlohmann::json& data) {
                  [](const auto& el) { return el.at("tavg"); });
 
 }
-void WeatherAnalysis::Analyse(const nlohmann::json& data) {
-  ParseJson(data);
+void WeatherAnalysis::Analyse() {
+  ParseJson(data_);
   avg_temp_ = std::accumulate(temperatures_.begin(), temperatures_.end(), 0.0) / 12;
   if (abs(best_temp - avg_temp_) > 2.5) {
     points_ = 0;
@@ -18,9 +18,12 @@ void WeatherAnalysis::Analyse(const nlohmann::json& data) {
     points_ = 10;
   }
 }
+
 double WeatherAnalysis::GetPoints() const {
   return points_;
 }
 double WeatherAnalysis::GetAvgTemp() const {
   return avg_temp_;
 }
+
+WeatherAnalysis::WeatherAnalysis(nlohmann::json json) :data_(json) {}

@@ -17,13 +17,13 @@ nlohmann::json CreateTestDataEmpty() {
 
 TEST(WeatherAnalysis, AnalyseGood) {
   auto json = CreateTestDataGood();
-  WeatherAnalysis w;
-  w.Analyse(json);
+  WeatherAnalysis w(json);
+  w.Analyse();
   EXPECT_EQ(w.GetAvgTemp(), 6.5);
 }
 
 TEST(WeatherAnalysis, AnalyseEmpty) {
   auto json = CreateTestDataEmpty();
-  WeatherAnalysis w;
-  EXPECT_THROW(w.Analyse(json), EmptyJson);
+  WeatherAnalysis w(json);
+  EXPECT_THROW(w.Analyse(), EmptyJson);
 }

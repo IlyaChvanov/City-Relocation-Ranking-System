@@ -5,7 +5,8 @@
 
 class WeatherAnalysis : public IDataAnalysis {
  public:
-  void Analyse(const nlohmann::json& data) override;
+  explicit WeatherAnalysis(nlohmann::json json);
+  void Analyse() override;
   double GetPoints() const;
   double GetAvgTemp() const;
  private:
@@ -14,6 +15,7 @@ class WeatherAnalysis : public IDataAnalysis {
   double avg_temp_;
   double points_; //0-10
   const double best_temp = 22.5;
+  nlohmann::json data_;
 };
 
 class EmptyJson : public std::exception {
