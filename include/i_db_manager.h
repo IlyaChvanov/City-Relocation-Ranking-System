@@ -11,7 +11,8 @@ class IDBManager {
   virtual std::vector<City> GetCities(size_t num) const = 0;
   virtual City GetCity(const std::string& city) const = 0;
   virtual void DeleteCity(const std::string& city) const = 0;
-  virtual double GetCountryLifeQuality(const std::string& country) const =0;
+  virtual double GetCountryLifeQuality(const std::string& country) const = 0;
+  virtual int GetRankOfLanguage(const std::string& language) const = 0;
 };
 
 class DBConnectionError : public std::exception {

@@ -116,3 +116,14 @@ double PostgresDBManager::GetCountryLifeQuality(const std::string& country) cons
     throw;
   }
 }
+
+int PostgresDBManager::GetRankOfLanguage(const std::string& language) const {
+  pqxx::read_transaction txn(*connection_);
+  const std::string query = "SELECT rank FROM languages "
+                            "WHERE language = " + MakeCorrectName(language);
+  const auto result = txn.exec(query);
+  if (result.empty()) {
+    return -1; // if rank = -1 then we do not consider it
+  }
+  return result.at(0).at(0).as<int>();
+}

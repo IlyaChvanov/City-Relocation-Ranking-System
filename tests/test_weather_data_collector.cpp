@@ -17,7 +17,6 @@ struct WeatherDataCollectorTest : public testing::Test {
 
 TEST_F(WeatherDataCollectorTest, CoordFromName) {
   CityCoord result = w->CoordFromName("London");
-
   const double epsilon = 1e-1; // epsilon = 1e-1: это примерно 11
   // км (этого обычно достаточно для идентификации одного города)
 
@@ -48,5 +47,5 @@ TEST_F(WeatherDataCollectorTest, FetchDataGood) {
 }
 
 TEST_F(WeatherDataCollectorTest, CityDoNotExist) {
-  EXPECT_THROW(w->FetchData("Neverland"), ErrorConnect);
+  EXPECT_THROW(w->FetchData("Neverland"), APIConnectionError);
 }
