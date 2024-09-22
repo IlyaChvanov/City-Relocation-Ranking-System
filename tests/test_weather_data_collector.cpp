@@ -46,6 +46,6 @@ TEST_F(WeatherDataCollectorTest, FetchDataGood) {
   EXPECT_EQ(correct.at("data").at(0), result.at("data").at(0)) << "The fetched data does not match the expected data.";
 }
 
-TEST_F(WeatherDataCollectorTest, CityDoNotExist) {
+TEST_F(WeatherDataCollectorTest, CityDoesNotExist) {
   EXPECT_THROW(w->FetchData("Neverland"), APIConnectionError);
 }

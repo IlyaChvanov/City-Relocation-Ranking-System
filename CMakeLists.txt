@@ -63,12 +63,16 @@ add_executable(tests
         src/weather_data_collector.cpp
         src/weather_analysis.cpp
         src/postgres_db_manager.cpp
+        src/language_analysis.cpp
+        src/language_data_collector.cpp
+        src/life_quality_data_collector.cpp
+        src/city_builder.cpp
         tests/test_main.cpp
         tests/test_weather_data_collector.cpp
         tests/test_weather_analysis.cpp
         tests/test_postgres.cpp
-        src/language_analysis.cpp
         tests/test_language_analysis.cpp
+        tests/test_builder.cpp
 )
 
 target_include_directories(tests

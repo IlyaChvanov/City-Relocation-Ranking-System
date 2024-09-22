@@ -8,14 +8,13 @@
 using Json = nlohmann::json;
 class CityBuilder {
  public:
-  std::unique_ptr<const City> Build(const std::string city_name);
+  std::unique_ptr<const City> Build(const std::string& city_name,
+                                    const std::string& country_name);
  private:
-  Json CollectWeather();
-  Json CollectLanguage();
-  Json CollectLifeQuality();
-  void SetWeatherP(const Json& weather);
-  void SetLanguageP(const Json& language);
-  void SetLifeQualityP(const Json& life_quality);
+  double CollectWeatherPoints() const;
+  double CollectLanguagePoints() const;
+  double CollectLifeQualityPoints() const;
+  double CountCommonPoints() const;
   City city_;
 };
 
