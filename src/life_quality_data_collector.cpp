@@ -9,5 +9,5 @@ void LifeQualityDataCollector::FetchData(const std::string& country) {
 }
 
 double LifeQualityDataCollector::GetLifeQualityPoints() const {
-  return points_;
+  return points_ / 10;
 }

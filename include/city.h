@@ -10,6 +10,8 @@ struct City {
   double points_life_quality;
   double points_common; //0-10
   int rating_position;
+  std::string language;
+  std::string country;
 };
 
 

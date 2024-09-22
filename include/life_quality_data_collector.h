@@ -5,7 +5,7 @@
 
 class LifeQualityDataCollector : public IDataCollector {
  public:
-  void FetchData(const std::string& city);
+  void FetchData(const std::string& country);
   double GetLifeQualityPoints() const;
  private:
   double points_;

@@ -16,6 +16,7 @@ class PostgresDBManager : public IDBManager{
   void DeleteCity(const std::string& city) const override;
   double GetCountryLifeQuality(const std::string& country) const override;
   int GetRankOfLanguage(const std::string& language) const override;
+  std::string GetLanguageFromCountry(const std::string& country) const override;
  private:
   std::string MakeCorrectName(const std::string& name) const;
   std::shared_ptr<pqxx::connection> connection_;
