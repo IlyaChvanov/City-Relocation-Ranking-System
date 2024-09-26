@@ -9,10 +9,10 @@
 
 std::unique_ptr<const City> CityBuilder::Build(const std::string& city_name,
                                                const std::string& country_name) {
-  PostgresDBManager postgres_db_manager;
+  auto db_manager = std::make_unique<PostgresDBManager>();
   city_.name = city_name;
   city_.country = country_name;
-  city_.language = postgres_db_manager.GetLanguageFromCountry(country_name);
+  city_.language = db_manager->GetLanguageFromCountry(country_name);
   city_.points_language = CollectLanguagePoints();
   city_.points_climate = CollectWeatherPoints();
   city_.points_life_quality = CollectLifeQualityPoints();
@@ -21,24 +21,24 @@ std::unique_ptr<const City> CityBuilder::Build(const std::string& city_name,
 }
 
 double CityBuilder::CollectWeatherPoints() const {
-  WeatherDataCollector weather_collector;
-  weather_collector.FetchData(city_.name);
-  WeatherAnalysis weather_analysis(weather_collector.GetJson());
+  auto weather_collector = std::make_unique<WeatherDataCollector>();
+  weather_collector->FetchData(city_.name);
+  WeatherAnalysis weather_analysis(weather_collector->GetJson());
   weather_analysis.Analyse();
   return weather_analysis.GetPoints();
 }
 
 double CityBuilder::CollectLifeQualityPoints() const {
-  LifeQualityDataCollector life_quality_data_collector;
-  life_quality_data_collector.FetchData(city_.country);
-  return life_quality_data_collector.GetLifeQualityPoints();
+  auto life_quality_data_collector = std::make_unique<LifeQualityDataCollector>();
+  life_quality_data_collector->FetchData(city_.country);
+  return life_quality_data_collector->GetLifeQualityPoints();
 }
 
 double CityBuilder::CollectLanguagePoints() const {
-  PostgresDBManager db_manager;
-  LanguageDataCollector language_data_collector;
-  language_data_collector.FetchData(city_.language);
-  LanguageAnalysis language_analysis(db_manager.GetRankOfLanguage(city_.language));
+  auto db_manager = std::make_unique<PostgresDBManager>();
+  auto language_data_collector = std::make_unique<LanguageDataCollector>();
+  language_data_collector->FetchData(city_.language);
+  LanguageAnalysis language_analysis(db_manager->GetRankOfLanguage(city_.language));
   language_analysis.Analyse();
   return language_analysis.GetPoints();
 }

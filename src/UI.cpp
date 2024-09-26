@@ -34,8 +34,7 @@ string UI::AskAndGetCountry() const {
   return country;
 }
 
-void UI::PrintCity(const std::string& city_to_find) const {
-  auto city = db_->GetCity(city_to_find);
+void UI::PrintCity(const City& city) const {
   cout << city.rating_position << ": " << "\033[1m" << city.name << "\033[1m" << '\n'
        << "climate: " << city.points_climate << '\n'
        << "life quality: " << city.points_life_quality << '\n'

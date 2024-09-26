@@ -20,7 +20,7 @@ struct PostgresTest : public testing::Test {
   void SetUp() override {
     conn = std::make_unique<pqxx::connection>(connection_str);
     DB = std::make_unique<PostgresDBManager>();
-    test_city = std::make_unique<City>("london", 1.0, 2.0, 3.0, 4.0, 5);
+    test_city = std::make_unique<City>("london", 1.0, 2.0, 3.0, 4.0, 5, "english", "uk");
     DB->InsertCity(*test_city);
   }
 
@@ -41,17 +41,18 @@ TEST_F(PostgresTest, InsertCity) {
   EXPECT_DOUBLE_EQ(res[0]["life_quality_points"].as<double>(), test_city->points_life_quality);
   EXPECT_DOUBLE_EQ(res[0]["language_points"].as<double>(), test_city->points_language);
   EXPECT_DOUBLE_EQ(res[0]["common_points"].as<double>(), test_city->points_common);
-  EXPECT_EQ(res[0]["rating_position"].as<int>(), test_city->rating_position);
+  EXPECT_EQ(res[0]["language"].as<std::string>(), test_city->language);
+  EXPECT_EQ(res[0]["country"].as<std::string>(), test_city->country);
 }
 
 TEST_F(PostgresTest, GetCity) {
   const auto london = DB->GetCity("london");
-  EXPECT_EQ(london.name, test_city->name);
-  EXPECT_EQ(london.points_climate, test_city->points_climate);
-  EXPECT_EQ(london.points_language, test_city->points_language);
-  EXPECT_EQ(london.points_common, test_city->points_common);
-  EXPECT_EQ(london.points_life_quality, test_city->points_life_quality);
-  EXPECT_EQ(london.rating_position, test_city->rating_position);
+  EXPECT_EQ(london->name, test_city->name);
+  EXPECT_EQ(london->points_climate, test_city->points_climate);
+  EXPECT_EQ(london->points_language, test_city->points_language);
+  EXPECT_EQ(london->points_common, test_city->points_common);
+  EXPECT_EQ(london->points_life_quality, test_city->points_life_quality);
+  EXPECT_EQ(london->rating_position, test_city->rating_position);
 }
 
 

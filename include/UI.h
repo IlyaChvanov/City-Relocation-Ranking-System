@@ -8,15 +8,15 @@
 #include "city.h"
 #include "i_db_manager.h"
 
-//TODO Дописать тест на Print, когда появится БД
 using DB = std::shared_ptr<const IDBManager>;
 class UI {
  public:
   explicit UI(DB db);
+  void Begin();
   void PrintTopCities(size_t cities_num) const;
   std::string AskAndGetCity() const;
   std::string AskAndGetCountry() const;
-  void PrintCity(const std::string& city_to_find) const;
+  void PrintCity(const City& city) const;
  private:
   const DB db_;
 };

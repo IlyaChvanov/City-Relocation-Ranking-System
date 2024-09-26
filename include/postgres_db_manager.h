@@ -12,7 +12,7 @@ class PostgresDBManager : public IDBManager{
   PostgresDBManager();
   void InsertCity(const City& city) override;
   std::vector<City> GetCities(size_t num) const override;
-  City GetCity(const std::string& city) const override;
+  std::optional<City> GetCity(const std::string& city) const override;
   void DeleteCity(const std::string& city) const override;
   double GetCountryLifeQuality(const std::string& country) const override;
   int GetRankOfLanguage(const std::string& language) const override;

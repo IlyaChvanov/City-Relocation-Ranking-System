@@ -4,12 +4,13 @@
 #include "city.h"
 
 #include <vector>
+#include <optional>
 
 class IDBManager {
  public:
   virtual void InsertCity(const City& city)  = 0;
   virtual std::vector<City> GetCities(size_t num) const = 0;
-  virtual City GetCity(const std::string& city) const = 0;
+  virtual std::optional<City> GetCity(const std::string& city) const = 0;
   virtual void DeleteCity(const std::string& city) const = 0;
   virtual double GetCountryLifeQuality(const std::string& country) const = 0;
   virtual int GetRankOfLanguage(const std::string& language) const = 0;
