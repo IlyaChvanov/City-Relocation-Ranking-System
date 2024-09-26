@@ -16,11 +16,11 @@ nlohmann::json IDataCollector::PerformGetRequest(const std::string& host,
   CURL* hnd = curl_easy_init();
   std::string response_string;
 
-  if(hnd) {
+  if (hnd) {
     curl_easy_setopt(hnd, CURLOPT_CUSTOMREQUEST, "GET");
     curl_easy_setopt(hnd, CURLOPT_URL, url.c_str());
 
-    struct curl_slist *headers = NULL;
+    struct curl_slist* headers = NULL;
     headers = curl_slist_append(headers, ("x-rapidapi-key: " + api_key).c_str());
     headers = curl_slist_append(headers, ("x-rapidapi-host: " + host).c_str());
     curl_easy_setopt(hnd, CURLOPT_HTTPHEADER, headers);
@@ -36,7 +36,7 @@ nlohmann::json IDataCollector::PerformGetRequest(const std::string& host,
       return {};
     }
 
-     curl_easy_cleanup(hnd);
+    curl_easy_cleanup(hnd);
     curl_slist_free_all(headers);
 
     return nlohmann::json::parse(response_string);

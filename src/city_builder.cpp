@@ -23,9 +23,9 @@ std::unique_ptr<const City> CityBuilder::Build(const std::string& city_name,
 double CityBuilder::CollectWeatherPoints() const {
   auto weather_collector = std::make_unique<WeatherDataCollector>();
   weather_collector->FetchData(city_.name);
-  WeatherAnalysis weather_analysis(weather_collector->GetJson());
-  weather_analysis.Analyse();
-  return weather_analysis.GetPoints();
+  auto weather_analysis = std::make_unique<WeatherAnalysis>(weather_collector->GetJson());
+  weather_analysis->Analyse();
+  return weather_analysis->GetPoints();
 }
 
 double CityBuilder::CollectLifeQualityPoints() const {

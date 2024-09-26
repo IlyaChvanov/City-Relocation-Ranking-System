@@ -23,7 +23,6 @@ CityCoord WeatherDataCollector::CoordFromName(const std::string& city) {
   std::string url = "https://open-weather13.p.rapidapi.com/city/" + city + "/EN";
   std::string host = "open-weather13.p.rapidapi.com";
   auto json = PerformGetRequest(host, url, rapid_api_key_);
-  std::cout << json.dump(4);
   if (json.contains("message")) {
     if (json.at("message") == "You have exceeded the MONTHLY quota for Requests on your current plan, BASIC. Upgrade your plan at https\n"
                               "://rapidapi.com/worldapi/api/open-weather13") {

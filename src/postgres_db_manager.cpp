@@ -5,7 +5,7 @@
 PostgresDBManager::PostgresDBManager() {
   std::string dbname = "CityRelocation";
   std::string user = "postgres";
-  std::string password = "58915891i";
+  std::string password = "58915891";
 
   std::string connection_str = "dbname=" + dbname +
       " user=" + user +
@@ -28,7 +28,9 @@ void PostgresDBManager::InsertCity(const City& city)  {
         txn.quote(city.points_life_quality) + ", " +
         txn.quote(city.points_language) + ", " +
         txn.quote(city.points_common) + ", " +
-        txn.quote(city.rating_position) + ")";
+        txn.quote(city.rating_position) + ", " +
+        txn.quote(city.language) + ", " +
+        txn.quote(city.country) + ")";
 
     txn.exec(query);
     txn.commit();
@@ -53,14 +55,16 @@ std::vector<City> PostgresDBManager::GetCities(size_t num) const {
         row.at("language_points").as<double>(),
         row.at("life_quality_points").as<double>(),
         row.at("common_points").as<double>(),
-        row.at("rating_position").as<int>()
+        row.at("rating_position").as<int>(),
+        row.at("language").as<std::string>(),
+        row.at("country").as<std::string>()
     };
   };
   std::transform(result.begin(), result.end(), std::back_inserter(ans), row_to_city);
   return ans;
 }
 
-City PostgresDBManager::GetCity(const std::string& city) const {
+std::optional<City> PostgresDBManager::GetCity(const std::string& city) const {
   std::string city_name;
   std::transform(city.begin(), city.end(), std::back_inserter(city_name),
                  [](const char c) { return tolower(c); });
@@ -70,8 +74,7 @@ City PostgresDBManager::GetCity(const std::string& city) const {
                       " WHERE city_name = " +  MakeCorrectName(city);
   const auto result = txn.exec(query);
   if (result.empty()) {
-    std::cerr << "City not found" << '\n';
-    throw NoDataInDB("city not found");
+    return std::nullopt;
   }
   City response;
   const pqxx::row row = result[0];
@@ -80,7 +83,9 @@ City PostgresDBManager::GetCity(const std::string& city) const {
   response.points_life_quality = row["life_quality_points"].as<double>();
   response.points_language = row["language_points"].as<double>();
   response.points_common = row["common_points"].as<double>();
-  response.rating_position= row["rating_position"].as<int>();
+  response.rating_position = row["rating_position"].as<int>();
+  response.language = row["language"].as<std::string>();
+  response.country = row["country"].as<std::string>();
 
   return response;
 }
@@ -126,4 +131,20 @@ int PostgresDBManager::GetRankOfLanguage(const std::string& language) const {
     return -1; // if rank = -1 then we do not consider it
   }
   return result.at(0).at(0).as<int>();
+}
+
+std::string PostgresDBManager::GetLanguageFromCountry(const std::string& country) const {
+  try {
+    pqxx::read_transaction txn(*connection_);
+    const std::string query = "SELECT most_common_language FROM countries_life_quality"
+                              " WHERE country_name = " + MakeCorrectName(country);
+    const auto result = txn.exec(query);
+    if (result.empty()) {
+      throw NoDataInDB("no matching of country and its language");
+    }
+    return result.at(0).at(0).as<std::string>();
+  } catch (const NoDataInDB& e) {
+    std::cerr << e.what();
+    throw;
+  }
 }
