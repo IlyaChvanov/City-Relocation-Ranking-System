@@ -21,6 +21,7 @@ A user writes the city he wants to know about and gets marks from 1 to 10 which 
 - **curl**: HTTPS requests and handling.
 - **nlohmann/json**: A JSON library for C++ used for parsing and manipulating JSON data.
 - **Google Test**: A testing framework for C++ used to create and run unit tests.
+- **Flask**: A python framework for api handling
 
 ## Installation
 
